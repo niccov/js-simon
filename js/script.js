@@ -4,11 +4,11 @@ Dopo che sono stati inseriti i 5 numeri, il software dice quanti e quali dei num
 ______________________________________________________________________________________________
 -creare un button collagato all'event listener
 -al click inserisce in pagina 5 numeri casuali e fa partire un timer di 10 secondi
-  .creare 5 variabili che memorizzano ciascuno un numero dalla funzione random numbers
+  .creare un array con 5 numeri random
   .stamparli in pagina
   .dopo 10 secondi fai apparire una serie di 5 prompt dove deve inserire i numeri visti
-    ->memorizzare i numeri inseriti nei 5 prompt
-    ->confrontare le 5 variabili dei numeri casuali con le 5 variabili dei numeri inseriti nei prompt
+    ->memorizzare i numeri inseriti nei 5 prompt in array
+    ->confrontare i 2 array 
     -SE i 5 numeri sono uguali
       .stampa in pagina "hai vinto";
       .stampa i numeri uguali e quelli diversi
@@ -17,14 +17,45 @@ ________________________________________________________________________________
       .stampa i numeri diversi e quelli uguali 
 */
 //memorizzo il pulsante per iniziare il gioco
-let startButton = document.getElementById("play-button");
+let startButtonElement = document.getElementById("play-button");
+
+let numbersElement = document.getElementById("numeri-casuali");
 
 //dichiaro l'evento al click del button
-startButton.addEventListener("click", function() {
-    for(i = 0; i < 5; i++){
-      const number = createRandomNumbers(99);
-      console.log(number);
-    }  
+startButtonElement.addEventListener("click", function() {
+    //array di numeri casuali 
+    const arrayNumbers = repeatRandomNumber(99);
+    //array stampato in pagina
+    numbersElement.innerText = arrayNumbers;
+
+    
+    //timer che parte quando schiaccio il pulsante
+    setTimeout(disappearNumbersAndAppearPrompt, 10000);
+    
+    const numeriUguali = [];
+
+    const numeriDiversi = [];
+
+
+    for(i = 0; i < arrayNumbers.length; i++) {
+
+        if(arrayNumbers[i] != disappearNumbersAndAppearPrompt) {
+
+            numeriDiversi.push(disappearNumbersAndAppearPrompt);
+        } else {
+            numeriUguali.push(disappearNumbersAndAppearPrompt);
+        }
+    }
+    
+    console.log(numeriDiversi)
+   /*
+    if(numeriDiversi.length > 0){
+        console.log("hai perso, " + "i numeri sbagliati sono: " + numeriDiversi + "e questi sono i numeri giusti: " + numeriUguali);
+        
+    } else {
+        console.log("hai vinto" + numeriUguali);
+    }
+    */
 })
 
 
@@ -37,5 +68,40 @@ function createRandomNumbers(max){
 
  // una volta che la nostra funzione viene eseguita, restituisci al suo posto questo valore
  return random;
+}
 
+//funzione che crea un array di numeri random 
+function repeatRandomNumber(max){
+
+    const randomNumbers = [];
+
+    for(i = 0; i < 5; i++){
+
+        let numbers = createRandomNumbers(max);
+
+        randomNumbers.push(numbers);
+    }  
+
+    return randomNumbers;
+
+}
+
+//funzione che scomparire i numeri presenti in pagina e fa apparire 5 prompt che inserisce in un array
+function disappearNumbersAndAppearPrompt(){
+    //scompaiono i numeri 
+    numbersElement.style.display = "none";
+
+    const userNumbers = [];
+
+    //appaiono i prompt
+    for(i = 0; i < 5; i++){
+        //memorizzo il prompt in una variabile 
+        let userNumbersAsked = parseInt (prompt("inserisci i numeri uno alla volta"));
+        //pusho i numeri nell'array
+        userNumbers.push(userNumbersAsked);
+    }
+  
+    
+    return userNumbers;
+    
 }
