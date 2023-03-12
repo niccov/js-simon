@@ -18,8 +18,21 @@ ________________________________________________________________________________
 */
 //memorizzo il pulsante per iniziare il gioco
 let startButtonElement = document.getElementById("play-button");
+//memorizzo ilpulsante per controllare i numeri
+let checkButtonElement = document.getElementById("controlla");
 
 let numbersElement = document.getElementById("numeri-casuali");
+
+let resultElement = document.getElementById("risultato");
+
+let inputsElement = document.getElementById("numeri-utente");
+
+//memorizzo i valori degli input
+let userNumberOne = document.getElementById("numero-1");
+let userNumberTwo = document.getElementById("numero-2");
+let userNumberThree = document.getElementById("numero-3");
+let userNumberFour = document.getElementById("numero-4");
+let userNumberFive = document.getElementById("numero-5");
 
 //dichiaro l'evento al click del button
 startButtonElement.addEventListener("click", function() {
@@ -28,34 +41,46 @@ startButtonElement.addEventListener("click", function() {
     //array stampato in pagina
     numbersElement.innerText = arrayNumbers;
 
-    
-    //timer che parte quando schiaccio il pulsante
-    setTimeout(disappearNumbersAndAppearPrompt, 10000);
-    
     const numeriUguali = [];
-
+    
     const numeriDiversi = [];
 
+    //timer che parte quando schiaccio il pulsante
+    setTimeout(function() {
+        disappearNumbers();
+        checkButtonElement.addEventListener("click", function() {
+            
+            const userNumbers = [parseInt(userNumberOne.value), parseInt(userNumberTwo.value), parseInt(userNumberThree.value), parseInt(userNumberFour.value), parseInt(userNumberFive.value)];
 
-    for(i = 0; i < arrayNumbers.length; i++) {
 
-        if(arrayNumbers[i] != disappearNumbersAndAppearPrompt) {
+            for(i = 0; i < arrayNumbers.length; i++) {
+                
+               if(arrayNumbers[i] != userNumbers[i]) {
+                    
+                   numeriDiversi.push(userNumbers[i]);
+               } else {
+                   numeriUguali.push(userNumbers[i]);
+               }
+            }
 
-            numeriDiversi.push(disappearNumbersAndAppearPrompt);
-        } else {
-            numeriUguali.push(disappearNumbersAndAppearPrompt);
-        }
-    }
-    
-    console.log(numeriDiversi)
-   /*
-    if(numeriDiversi.length > 0){
-        console.log("hai perso, " + "i numeri sbagliati sono: " + numeriDiversi + "e questi sono i numeri giusti: " + numeriUguali);
+            if(numeriDiversi.length > 0){
+
+                resultElement.innerText = "HAI PERSO, " + "i numeri sbagliati sono: " + numeriDiversi + " e questi sono i numeri giusti: " + numeriUguali; 
+
+            } else {
+
+                resultElement.innerText = "HAI VINTO" + numeriUguali;
+
+            }
         
-    } else {
-        console.log("hai vinto" + numeriUguali);
-    }
-    */
+            console.log(arrayNumbers);
+            console.log(userNumbers);
+            console.log("questi sono i numeri diversi: " + numeriDiversi);
+            console.log("questi sono i numeri uguali: " + numeriUguali);
+        })  
+    }, 10000);
+    
+
 })
 
 
@@ -87,21 +112,34 @@ function repeatRandomNumber(max){
 }
 
 //funzione che scomparire i numeri presenti in pagina e fa apparire 5 prompt che inserisce in un array
-function disappearNumbersAndAppearPrompt(){
+function disappearNumbers(){
+
     //scompaiono i numeri 
     numbersElement.style.display = "none";
 
-    const userNumbers = [];
+    inputsElement.style.display = "block";
 
-    //appaiono i prompt
-    for(i = 0; i < 5; i++){
-        //memorizzo il prompt in una variabile 
-        let userNumbersAsked = parseInt (prompt("inserisci i numeri uno alla volta"));
-        //pusho i numeri nell'array
-        userNumbers.push(userNumbersAsked);
+}
+
+//funzione che mi inserisce in un array i valori inseriti dal utente
+function appearUserNumbers (arrayNumbers){
+
+    const numeriUguali = [];
+    
+    const numeriDiversi = [];
+
+    const userNumbers = [userNumberOne.value, userNumberTwo.value, userNumberThree.value, userNumberFour.value, userNumberFive.value];
+
+
+    for(i = 0; i < arrayNumbers.length; i++) {
+        
+       if(arrayNumbers[i] != userNumbers) {
+            
+           numeriDiversi.push(userNumbers);
+       } else {
+           numeriUguali.push(userNumbers);
+       }
     }
-  
-    
     return userNumbers;
-    
+
 }
